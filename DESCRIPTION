@@ -1,0 +1,15 @@
+Package: cmtest
+Version: 0.1-1
+Date: 2021-05-24
+Title: Conditional moments test
+Authors@R: person("Yves", "Croissant", role = c("aut", "cre"), email = "yves.croissant@univ-reunion.fr")
+Depends: R (>= 4.0.0)
+Suggests: censReg, AER, knitr, rmarkdown, maxLik
+Description: Conditional moments test are usefull to detect specification violations for models estimated by maximum likelihood. The package implements methods for probit and tobit models.
+Encoding: UTF-8
+License: GPL (>=2)
+URL: https://www.r-project.org
+VignetteBuilder: knitr
+RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)
+LazyData: true

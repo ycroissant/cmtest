@@ -2,6 +2,7 @@
 title: cmtest, an R package for conditional moments tests
 author: Yves Croissant
 date: 2021/03/10
+bibliography: ../inst/REFERENCES.bib
 output: 
   bookdown::html_document2:
     toc: true
@@ -9,8 +10,6 @@ output:
   bookdown::pdf_document2:
     number_sections: true
     toc: false
-bibliography:
-- /home/yves/YvesPro2/R_github/microecr/book.bib	
 vignette: >
   %\VignetteEncoding{UTF-8}
   %\VignetteIndexEntry{zerotrunc: an R package for tobit models}

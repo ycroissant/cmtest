@@ -3,7 +3,6 @@
 \name{cmtest}
 \alias{cmtest}
 \alias{cmtest.tobit}
-\alias{cmtest.tobit1}
 \alias{cmtest.censReg}
 \alias{cmtest.glm}
 \title{Conditional moments test}
@@ -17,14 +16,6 @@ cmtest(
 )
 
 \method{cmtest}{tobit}(
-  x,
-  test = c("normality", "reset", "heterosc", "skewness", "kurtosis"),
-  powers = 2:3,
-  heter_cov = NULL,
-  OPG = FALSE
-)
-
-\method{cmtest}{tobit1}(
   x,
   test = c("normality", "reset", "heterosc", "skewness", "kurtosis"),
   powers = 2:3,
@@ -69,6 +60,16 @@ all the covariates used in the regression are used),}
 derivatives are used, otherwise the outer product of the
 gradient formula is used}
 }
+\value{
+a list with class \code{'htest'} containing the following components:
+\itemize{
+\item data.mane: a character string describing the fitted model
+\item statistic: the value of the test statistic
+\item parameter: degrees of freedom
+\item p.value: the p.value of the test
+\item method: a character indicating what type of test is performed
+}
+}
 \description{
 Conditional moments tests for maximum likelihood estimators consist
 on adding to the matrix of individual contributions to the score
@@ -77,6 +78,29 @@ value of the vector of augmented scores is zero. It is particularly
 convenient for the probit and the tobit model to test for
 functional form, omitted variables, heteroscedasticity and normaliy.
 }
+\examples{
+# replication of Wells (2003) and Pagan and Vella (1989) using Fair's data
+library("AER")
+data("Affairs", package = "AER")
+z <- tobit(affairs ~ gender + age + yearsmarried + children + religiousness +
+                     education + occupation + rating, data = Affairs)
+cmtest(z, test = "normality")
+cmtest(z, test = "skewness", OPG = TRUE)
+cmtest(z, test = "kurtosis", OPG = TRUE)
+cmtest(z, test = "reset", powers = 2, OPG = TRUE)
+cmtest(z, test = "reset", powers = 3, OPG = TRUE)
+cmtest(z, test = "heterosc", OPG = TRUE, heter_cov = ~ gender)
+}
+\references{
+\insertRef{NEWE:85}{cmtest}
+
+\insertRef{PAGA:VELL:89}{cmtest}
+
+\insertRef{TAUC:85}{cmtest}
+
+\insertRef{WELL:03}{cmtest}
+}
 \author{
 Yves Croissant
 }
+\keyword{htest}

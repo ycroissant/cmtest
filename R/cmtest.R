@@ -23,8 +23,38 @@
 #' @param OPG a boolean, if `FALSE` (the default), the analytic
 #'     derivatives are used, otherwise the outer product of the
 #'     gradient formula is used
+#' @return a list with class `'htest'` containing the following components:
+#' - data.mane: a character string describing the fitted model
+#' - statistic: the value of the test statistic
+#' - parameter: degrees of freedom
+#' - p.value: the p.value of the test
+#' - method: a character indicating what type of test is performed
 #' @importFrom stats binomial dnorm pnorm model.frame model.response model.matrix coef glm formula family as.formula pchisq
+#' @importFrom Rdpack reprompt
 #' @author Yves Croissant
+#' @keywords htest
+#' @references
+#'
+#' \insertRef{NEWE:85}{cmtest}
+#'
+#' \insertRef{PAGA:VELL:89}{cmtest}
+#' 
+#' \insertRef{TAUC:85}{cmtest}
+#'
+#' \insertRef{WELL:03}{cmtest}
+#' 
+#' @examples
+#' # replication of Wells (2003) and Pagan and Vella (1989) using Fair's data
+#' library("AER")
+#' data("Affairs", package = "AER")
+#' z <- tobit(affairs ~ gender + age + yearsmarried + children + religiousness +
+#'                      education + occupation + rating, data = Affairs)
+#' cmtest(z, test = "normality")
+#' cmtest(z, test = "skewness", OPG = TRUE)
+#' cmtest(z, test = "kurtosis", OPG = TRUE)
+#' cmtest(z, test = "reset", powers = 2, OPG = TRUE)
+#' cmtest(z, test = "reset", powers = 3, OPG = TRUE)
+#' cmtest(z, test = "heterosc", OPG = TRUE, heter_cov = ~ gender)
 #' @export
 cmtest <- function(x, test = c("normality", "reset", "heterosc",
                                "skewness", "kurtosis"),
@@ -51,23 +81,23 @@ cmtest.tobit <- function(x, test = c("normality", "reset", "heterosc",
     result
 }
 
-#' @rdname cmtest
-#' @export
-cmtest.tobit1 <- function(x, test = c("normality", "reset", "heterosc",
-                               "skewness", "kurtosis"),
-                         powers = 2:3, heter_cov = NULL, OPG = FALSE){
-    test <- match.arg(test)
-    param <- coef(x)
-    X <- model.matrix(x)
-    mf <- model.frame(x)
-    y <- model.response(mf)
-    result <- cmtest_tobit(param, X, y, mf, test = test,
-                           powers = powers, heter_cov = heter_cov, OPG = OPG)
-    .data.name <- paste(deparse(formula(x)))
-    if (length(.data.name) > 1) .data.name <- paste(.data.name[1], "...")
-    result$data.name <- .data.name
-    result
-}
+## #' @rdname cmtest
+## #' @export
+## cmtest.tobit1 <- function(x, test = c("normality", "reset", "heterosc",
+##                                "skewness", "kurtosis"),
+##                          powers = 2:3, heter_cov = NULL, OPG = FALSE){
+##     test <- match.arg(test)
+##     param <- coef(x)
+##     X <- model.matrix(x)
+##     mf <- model.frame(x)
+##     y <- model.response(mf)
+##     result <- cmtest_tobit(param, X, y, mf, test = test,
+##                            powers = powers, heter_cov = heter_cov, OPG = OPG)
+##     .data.name <- paste(deparse(formula(x)))
+##     if (length(.data.name) > 1) .data.name <- paste(.data.name[1], "...")
+##     result$data.name <- .data.name
+##     result
+## }
 
 
 #' @rdname cmtest
